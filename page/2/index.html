@@ -166,6 +166,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/20/%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">线程间同步的方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-20 17:48:36 / 修改时间：17:49:46" itemprop="dateCreated datePublished" datetime="2021-06-20T17:48:36+08:00">2021-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程间的同步的方式"><a href="#线程间的同步的方式" class="headerlink" title="线程间的同步的方式"></a>线程间的同步的方式</h1><p>线程间同步的方式主要有三种：信号量、互斥量（互斥锁）和条件变量</p>
+<ul>
+<li>信号量类似于多进程的信号量</li>
+<li>互斥量，或者说互斥锁，保护关键代码段，以确保线程的独占式访问</li>
+<li>条件变量，用于线程之间同步共享数据的值，也提供了一种通知机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程</li>
+</ul>
+<h2 id="POSIX信号量"><a href="#POSIX信号量" class="headerlink" title="POSIX信号量"></a>POSIX信号量</h2><p>POSIX信号量和进程间通信的System V IPC信号量是不同的，接口比较相似</p>
+<p>常用的信号量操作方式：初始化信号量、销毁信号量、PV操作之类，如以下API</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_init</span><span class="params">(<span class="keyword">sem_t</span>* sem, <span class="keyword">int</span> pshared, <span class="keyword">unsigned</span> <span class="keyword">int</span> value)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_destroy</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_wait</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_post</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>初始化和销毁信号量都要小心，防止初始化已经初始化过的信号量、防止销毁正在有进程使用的信号量</p>
+<h2 id="互斥量"><a href="#互斥量" class="headerlink" title="互斥量"></a>互斥量</h2><p>或者说，互斥锁，用来保护关键代码段，以确保独占式的访问，类似于二进制信号量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span>* mutexattr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destroy</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于互斥量，也可以设置是否允许进程间共享、只能一个进程的多个线程内共享</p>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>用于线程之间共享同步数据的量，当共享数据达到某个值的时候，唤醒这个等待共享数据的线程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span>* cond_addt)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond, <span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/18/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E6%98%AF%E4%BB%8Emain%E5%87%BD%E6%95%B0%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E4%B9%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -786,7 +869,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
