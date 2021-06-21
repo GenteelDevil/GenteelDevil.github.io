@@ -166,6 +166,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/31/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/31/" class="post-title-link" itemprop="url">31</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 09:17:58 / 修改时间：09:18:34" itemprop="dateCreated datePublished" datetime="2021-06-21T09:17:58+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/" itemprop="url" rel="index"><span itemprop="name">剑指Offer</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/31-%E6%A0%88%E7%9A%84%E5%8E%8B%E5%85%A5%E5%BC%B9%E5%87%BA-md/" itemprop="url" rel="index"><span itemprop="name">31.栈的压入弹出.md</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="31-栈的压入弹出"><a href="#31-栈的压入弹出" class="headerlink" title="31 栈的压入弹出"></a>31 栈的压入弹出</h1><h3 id="方法1-巧妙的做法"><a href="#方法1-巧妙的做法" class="headerlink" title="方法1 巧妙的做法"></a>方法1 巧妙的做法</h3><p><strong>思路</strong></p>
+<p>依旧使用原来的<code>pushed</code>数组用来模拟栈，使用<code>i</code>来表示栈顶指针。遍历<code>pushed</code>数组中的数字并且入栈，如果检测到有和<code>poped</code>数组依次相同的数字，则进行出栈操作。</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>这个地方不会发生迭代器失效<code>pushed[i] = num</code>（写给我自己看的哈）</li>
+<li>每一轮循环始终会把<code>i</code>进行自加，因为每一轮都会存放一个数字到栈中，把<code>i</code>理解为栈顶指针为指向下一个存放元素的位置。但是如果可以使用<code>poped</code>数组出栈，则对<code>i</code>进行自减</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; pushed, vector&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> num : pushed) &#123;</span><br><span class="line">            <span class="comment">// 暗含了从后往前移位的操作来模拟栈</span></span><br><span class="line">            pushed[i] = num;</span><br><span class="line">            <span class="keyword">while</span> (i &gt;= <span class="number">0</span> &amp;&amp; pushed[i] == popped[j]) &#123;</span><br><span class="line">                ++j;</span><br><span class="line">                --i;</span><br><span class="line">            &#125;</span><br><span class="line">            ++i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2-使用一个辅助栈"><a href="#方法2-使用一个辅助栈" class="headerlink" title="方法2 使用一个辅助栈"></a>方法2 使用一个辅助栈</h3><p><strong>思路</strong></p>
+<p>思路实际上和方法1一样，只不过这个地方单独使用了一个栈来存放元素</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; pushed, vector&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 定义一个栈模拟对于pushed的操作</span></span><br><span class="line">        stack&lt;<span class="keyword">int</span>&gt; helpStk;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> num : pushed) &#123;</span><br><span class="line">            <span class="comment">// 始终入栈</span></span><br><span class="line">            helpStk.<span class="built_in">push</span>(num);</span><br><span class="line">            <span class="comment">// 有相同的元素就出栈 出栈是多个持续操作</span></span><br><span class="line">            <span class="keyword">while</span> (!helpStk.<span class="built_in">empty</span>() &amp;&amp; helpStk.<span class="built_in">top</span>() == popped[j]) &#123;</span><br><span class="line">                helpStk.<span class="built_in">pop</span>();</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> j == popped.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -964,20 +1052,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
