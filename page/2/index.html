@@ -166,6 +166,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/32~34/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/32~34/" class="post-title-link" itemprop="url">32~34</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 09:28:19 / 修改时间：10:35:07" itemprop="dateCreated datePublished" datetime="2021-06-21T09:28:19+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/" itemprop="url" rel="index"><span itemprop="name">剑指Offer</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="32-34-二叉树的层次遍历"><a href="#32-34-二叉树的层次遍历" class="headerlink" title="32~34 二叉树的层次遍历"></a>32~34 二叉树的层次遍历</h2><p>三道都是二叉树层次遍历相关</p>
+<h2 id="32-I-从上到下打印二叉树"><a href="#32-I-从上到下打印二叉树" class="headerlink" title="32 I 从上到下打印二叉树"></a>32 I 从上到下打印二叉树</h2><p><strong>思路</strong></p>
+<p>层次遍历</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">levelOrder</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);  </span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> curLevelSize = que.<span class="built_in">size</span>();</span><br><span class="line">            <span class="comment">// 这个地方是先用再自减</span></span><br><span class="line">            <span class="keyword">while</span>(curLevelSize--) &#123;</span><br><span class="line">                TreeNode* tmp = que.<span class="built_in">front</span>();</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                res.<span class="built_in">push_back</span>(tmp-&gt;val);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left)</span><br><span class="line">                    que.<span class="built_in">push</span>(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right)</span><br><span class="line">                    que.<span class="built_in">push</span>(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="33-II-从上到下打印二叉树"><a href="#33-II-从上到下打印二叉树" class="headerlink" title="33 II 从上到下打印二叉树"></a>33 II 从上到下打印二叉树</h2><p><strong>思路</strong></p>
+<p>层次遍历，需要把每一层的单独存入一个vector中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">levelOrder</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> n = que.<span class="built_in">size</span>();</span><br><span class="line">            vector&lt;<span class="keyword">int</span>&gt; tmpVector;</span><br><span class="line">            <span class="keyword">while</span> (n--) &#123;</span><br><span class="line">                TreeNode* tmp = que.<span class="built_in">front</span>();</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                tmpVector.<span class="built_in">push_back</span>(tmp-&gt;val);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left) que.<span class="built_in">push</span>(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right) que.<span class="built_in">push</span>(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            res.<span class="built_in">push_back</span>(tmpVector);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="34-III-从上到下打印二叉树"><a href="#34-III-从上到下打印二叉树" class="headerlink" title="34 III 从上到下打印二叉树"></a>34 III 从上到下打印二叉树</h2><p><strong>思路</strong></p>
+<p>对于每层，顺序、逆序进行遍历</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">levelOrder</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">bool</span> inc = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> n = que.<span class="built_in">size</span>();</span><br><span class="line">            <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">tmpRes</span><span class="params">(n)</span></span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">                TreeNode* tmpNode = que.<span class="built_in">front</span>();</span><br><span class="line">                <span class="keyword">if</span> (inc)</span><br><span class="line">                    tmpRes[i] = tmpNode-&gt;val;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                    tmpRes[n - i - <span class="number">1</span>] = tmpNode-&gt;val;</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span> (tmpNode-&gt;left) que.<span class="built_in">push</span>(tmpNode-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmpNode-&gt;right) que.<span class="built_in">push</span>(tmpNode-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            inc = !inc;</span><br><span class="line">            res.<span class="built_in">push_back</span>(tmpRes);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/31/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/31/" class="post-title-link" itemprop="url">31</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 09:17:58 / 修改时间：10:34:54" itemprop="dateCreated datePublished" datetime="2021-06-21T09:17:58+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/" itemprop="url" rel="index"><span itemprop="name">剑指Offer</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="31-栈的压入弹出"><a href="#31-栈的压入弹出" class="headerlink" title="31 栈的压入弹出"></a>31 栈的压入弹出</h1><h3 id="方法1-巧妙的做法"><a href="#方法1-巧妙的做法" class="headerlink" title="方法1 巧妙的做法"></a>方法1 巧妙的做法</h3><p><strong>思路</strong></p>
+<p>依旧使用原来的<code>pushed</code>数组用来模拟栈，使用<code>i</code>来表示栈顶指针。遍历<code>pushed</code>数组中的数字并且入栈，如果检测到有和<code>poped</code>数组依次相同的数字，则进行出栈操作。</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>这个地方不会发生迭代器失效<code>pushed[i] = num</code>（写给我自己看的哈）</li>
+<li>每一轮循环始终会把<code>i</code>进行自加，因为每一轮都会存放一个数字到栈中，把<code>i</code>理解为栈顶指针为指向下一个存放元素的位置。但是如果可以使用<code>poped</code>数组出栈，则对<code>i</code>进行自减</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; pushed, vector&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> num : pushed) &#123;</span><br><span class="line">            <span class="comment">// 暗含了从后往前移位的操作来模拟栈</span></span><br><span class="line">            pushed[i] = num;</span><br><span class="line">            <span class="keyword">while</span> (i &gt;= <span class="number">0</span> &amp;&amp; pushed[i] == popped[j]) &#123;</span><br><span class="line">                ++j;</span><br><span class="line">                --i;</span><br><span class="line">            &#125;</span><br><span class="line">            ++i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2-使用一个辅助栈"><a href="#方法2-使用一个辅助栈" class="headerlink" title="方法2 使用一个辅助栈"></a>方法2 使用一个辅助栈</h3><p><strong>思路</strong></p>
+<p>思路实际上和方法1一样，只不过这个地方单独使用了一个栈来存放元素</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; pushed, vector&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 定义一个栈模拟对于pushed的操作</span></span><br><span class="line">        stack&lt;<span class="keyword">int</span>&gt; helpStk;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> num : pushed) &#123;</span><br><span class="line">            <span class="comment">// 始终入栈</span></span><br><span class="line">            helpStk.<span class="built_in">push</span>(num);</span><br><span class="line">            <span class="comment">// 有相同的元素就出栈 出栈是多个持续操作</span></span><br><span class="line">            <span class="keyword">while</span> (!helpStk.<span class="built_in">empty</span>() &amp;&amp; helpStk.<span class="built_in">top</span>() == popped[j]) &#123;</span><br><span class="line">                helpStk.<span class="built_in">pop</span>();</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> j == popped.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -242,89 +410,6 @@
 </li>
 </ol>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="OneShell">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OneShell">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/20/%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">线程间同步的方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-20 17:48:36 / 修改时间：17:49:46" itemprop="dateCreated datePublished" datetime="2021-06-20T17:48:36+08:00">2021-06-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线程间的同步的方式"><a href="#线程间的同步的方式" class="headerlink" title="线程间的同步的方式"></a>线程间的同步的方式</h1><p>线程间同步的方式主要有三种：信号量、互斥量（互斥锁）和条件变量</p>
-<ul>
-<li>信号量类似于多进程的信号量</li>
-<li>互斥量，或者说互斥锁，保护关键代码段，以确保线程的独占式访问</li>
-<li>条件变量，用于线程之间同步共享数据的值，也提供了一种通知机制，当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程</li>
-</ul>
-<h2 id="POSIX信号量"><a href="#POSIX信号量" class="headerlink" title="POSIX信号量"></a>POSIX信号量</h2><p>POSIX信号量和进程间通信的System V IPC信号量是不同的，接口比较相似</p>
-<p>常用的信号量操作方式：初始化信号量、销毁信号量、PV操作之类，如以下API</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_init</span><span class="params">(<span class="keyword">sem_t</span>* sem, <span class="keyword">int</span> pshared, <span class="keyword">unsigned</span> <span class="keyword">int</span> value)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_destroy</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_wait</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_post</span><span class="params">(<span class="keyword">sem_t</span>* sem)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p>初始化和销毁信号量都要小心，防止初始化已经初始化过的信号量、防止销毁正在有进程使用的信号量</p>
-<h2 id="互斥量"><a href="#互斥量" class="headerlink" title="互斥量"></a>互斥量</h2><p>或者说，互斥锁，用来保护关键代码段，以确保独占式的访问，类似于二进制信号量。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span>* mutexattr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destroy</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p>对于互斥量，也可以设置是否允许进程间共享、只能一个进程的多个线程内共享</p>
-<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>用于线程之间共享同步数据的量，当共享数据达到某个值的时候，唤醒这个等待共享数据的线程</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span>* cond_addt)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span>* cond, <span class="keyword">pthread_mutex_t</span>* mutex)</span></span>;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -963,7 +1048,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -976,7 +1061,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
