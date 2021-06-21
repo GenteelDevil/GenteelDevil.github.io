@@ -166,6 +166,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/18/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E6%98%AF%E4%BB%8Emain%E5%87%BD%E6%95%B0%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/18/%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E6%98%AF%E4%BB%8Emain%E5%87%BD%E6%95%B0%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E4%B9%88/" class="post-title-link" itemprop="url">一个程序是从main函数开始执行么</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-18 09:11:39 / 修改时间：09:12:36" itemprop="dateCreated datePublished" datetime="2021-06-18T09:11:39+08:00">2021-06-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一个程序是从main函数开始执行么"><a href="#一个程序是从main函数开始执行么" class="headerlink" title="一个程序是从main函数开始执行么"></a>一个程序是从main函数开始执行么</h1><p>不是的</p>
+<ul>
+<li>一个程序开始运行，实际上是操作系统为它创建了一个进程后，把控制权交到了入口函数Entry Point，入口函数也往往是运行库的一部分。</li>
+<li>入口函数对运行库和程序运行环境进行初始化，包括堆栈、IO、线程、全局变量的构造等等。</li>
+<li>入口函数初始化之后，调用main函数，并且传入main函数需要的参数，argc、argv字符串数组</li>
+<li>main函数执行完毕之后，实际上就是函数调用完毕，返回到入口函数，入口函数进行清理工作，例如全局变量的析构、堆销毁、关闭IO等，然后进行系统调用结束进程</li>
+</ul>
+<p>额外的一些补充，glibc的入口是<code>_start</code>，我们也可以在编译的时候来重写<code>_start</code>函数，重写了之后原来<code>_start</code>给<code>main</code>函数准备的退出清理工作就没了，这个时候<code>main</code>函数的退出也不能使用<code>return</code>，而是要使用<code>exit</code>。同样编译的使用也可以使用<code>-e</code>属性，或者是<code>-nostartfiles</code>，具体就不展开说了，<a target="_blank" rel="noopener" href="https://blog.csdn.net/skertone/article/details/38088205">参考链接</a></p>
+<p><code>_start</code>函数会调用<code>__libc_start_main</code>函数，大概的基本流程如下，可以总结为，获取参数列表和环境变量，为下一步调用准备：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _start() &#123;</span><br><span class="line">	%ebp = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> argc = pop from stack;	<span class="comment">// 从栈中获取argc</span></span><br><span class="line">	<span class="keyword">char</span>** argv = top of stack;	<span class="comment">// 获取argv，这两个都是要传递给main函数的</span></span><br><span class="line">	__libc_start_main(main, argc, argv, __libc_csu_init, __libc_csu_fini, edx, top of stack);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行函数<code>__libc_start_main</code>，这个时候还没有执行到<code>main</code>函数，不过在这个里面要进行调用了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __libc_start_main(</span><br><span class="line">	<span class="built_in"><span class="keyword">int</span></span> (*main) (<span class="keyword">int</span>, <span class="keyword">char</span> **, <span class="keyword">char</span> **),</span><br><span class="line">	<span class="keyword">int</span> argc,</span><br><span class="line">	<span class="keyword">char</span> * unbounded *__unbounded ubp_av,</span><br><span class="line">	__typeof (main) init,			<span class="comment">// main调用前的初始化工作</span></span><br><span class="line">	<span class="built_in"><span class="keyword">void</span></span> (*fini) (<span class="keyword">void</span>),			<span class="comment">// main结束后的收尾工作</span></span><br><span class="line">	<span class="built_in"><span class="keyword">void</span></span> (*rtld_fini) (<span class="keyword">void</span>),</span><br><span class="line">	<span class="keyword">void</span> * __unbounded stack_end	<span class="comment">// 标明了栈底，也就是最高栈地址</span></span><br><span class="line">) &#123;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> __BOUNDED_POINTERS__</span></span><br><span class="line">    	<span class="keyword">char</span> **argv;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> argv ubp_av</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    	<span class="keyword">int</span> results;</span><br><span class="line">   <span class="keyword">char</span>** ubp_ev = &amp;ubp_av[argc + <span class="number">1</span>];</span><br><span class="line">    INIT_ARGV_AND_ENVIRON;	<span class="comment">// 宏展开__environ = ubp_ev</span></span><br><span class="line">    __libc_stack_end = stack_end;</span><br><span class="line">    <span class="built_in">DL_SYSDEP_OSCHECK</span> (__libc_fatal);	<span class="comment">// 检查操作系统版本</span></span><br><span class="line">    __pthread_initialize_minima();		<span class="comment">// 可能和多线程相关</span></span><br><span class="line">    __cxa_atexit(rtld_fini, <span class="literal">NULL</span>, <span class="literal">NULL</span>);	</span><br><span class="line">    __libc_init_first(argc, argv, __environ);	</span><br><span class="line">    __cxa_atexit(fini, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    (*init) (argc, argv, __environ);</span><br><span class="line">    </span><br><span class="line">    result = <span class="built_in">main</span> (argc, argv, __environ);	<span class="comment">// 传递参数列表，环境变量，调用main函数</span></span><br><span class="line">    <span class="built_in">exit</span>(result);	<span class="comment">//	退出</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>exit函数也是有讲究的，不过根本就是使用系统调用结束进程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">(<span class="keyword">int</span> status)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (__exit_funcs != <span class="literal">NULL</span>) &#123;</span><br><span class="line">		...</span><br><span class="line">		__exit_funcs = __exit_funcs-&gt;next;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	_exit(status);	<span class="comment">// 此处是一个系统调用 结束main函数 也是结束进程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/17/IO%E5%A4%8D%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -702,7 +786,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
