@@ -166,6 +166,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/29%20%E9%A1%BA%E6%97%B6%E9%92%88%E6%89%93%E5%8D%B0%E7%9F%A9%E9%98%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/29%20%E9%A1%BA%E6%97%B6%E9%92%88%E6%89%93%E5%8D%B0%E7%9F%A9%E9%98%B5/" class="post-title-link" itemprop="url">29 顺时针打印矩阵</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 10:13:32 / 修改时间：10:13:48" itemprop="dateCreated datePublished" datetime="2021-06-21T10:13:32+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/" itemprop="url" rel="index"><span itemprop="name">剑指Offer</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="29-顺时针打印矩阵"><a href="#29-顺时针打印矩阵" class="headerlink" title="29 顺时针打印矩阵"></a>29 顺时针打印矩阵</h1><p><strong>思路</strong></p>
+<p>没有什么好说的，强行模拟即可，右下左上顺序，注意处理边界值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">spiralOrder</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">if</span> (matrix.<span class="built_in">size</span>() == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="comment">// 定义上下层和左右层</span></span><br><span class="line">        <span class="keyword">int</span> up = <span class="number">0</span>, down = matrix.<span class="built_in">size</span>() - <span class="number">1</span>, left = <span class="number">0</span>, right = matrix[<span class="number">0</span>].<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 从左往右</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = left; i &lt;= right; ++i) </span><br><span class="line">                res.<span class="built_in">push_back</span>(matrix[up][i]);</span><br><span class="line">            <span class="comment">// 修改上边界</span></span><br><span class="line">            <span class="keyword">if</span> (++up &gt; down)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">// 从上往下</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = up; i &lt;= down; ++i) </span><br><span class="line">                res.<span class="built_in">push_back</span>(matrix[i][right]);</span><br><span class="line">            <span class="comment">// 修改右边界</span></span><br><span class="line">            <span class="keyword">if</span> (--right &lt; left)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">// 从右往左</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = right; i &gt;= left; --i)</span><br><span class="line">                res.<span class="built_in">push_back</span>(matrix[down][i]);</span><br><span class="line">            <span class="comment">// 修改下边界</span></span><br><span class="line">            <span class="keyword">if</span> (--down &lt; up)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">// 修改左边界</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = down; i &gt;= up; --i)</span><br><span class="line">                res.<span class="built_in">push_back</span>(matrix[i][left]);</span><br><span class="line">            <span class="keyword">if</span> (++left &gt; right)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/12%20%E7%9F%A9%E9%98%B5%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1048,131 +1123,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/17/%E4%BD%BF%E7%94%A8next%E4%B8%BB%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="OneShell">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OneShell">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/17/%E4%BD%BF%E7%94%A8next%E4%B8%BB%E9%A2%98/" class="post-title-link" itemprop="url">使用next主题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-17 13:14:49 / 修改时间：14:09:34" itemprop="dateCreated datePublished" datetime="2021-06-17T13:14:49+08:00">2021-06-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7%E5%85%9A/" itemprop="url" rel="index"><span itemprop="name">工具党</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7%E5%85%9A/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="使用next主题"><a href="#使用next主题" class="headerlink" title="使用next主题"></a>使用next主题</h1><p>Hexo安装主题只需要把主题文件复制到站点目录的theme目录下，然后对站点的配置文件启用该主题即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd your-hexo-site</span><br><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-<p>然后在hexo的配置文件中进行配置即可</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
-
-<p>做完上述的主题配置，如果是从头开始搭建的同志会发现，现在出来的站点结果就是光秃秃的</p>
-<p><img src="/images/image-20210615163735536.png" alt="image-20210615163735536"> </p>
-<p>只有两个菜单栏<code>Home</code>和<code>Archives</code></p>
-<h2 id="配置菜单栏"><a href="#配置菜单栏" class="headerlink" title="配置菜单栏"></a>配置菜单栏</h2><h3 id="启用菜单栏"><a href="#启用菜单栏" class="headerlink" title="启用菜单栏"></a>启用菜单栏</h3><p>首先，需要修改next的主题配置文件中。对于配置文件，新手一开始有点头晕，一个是hexo的配置文件，一个是theme的配置文件，现在简单说一下。hexo配置文件可以理解为全局的一个配置文件，theme配置文件在theme主题文件下，例如next主题的配置文件在<code>站点目录/theme/next/_config.yml</code></p>
-<p><img src="/images/image-20210615164204576.png" alt="image-20210615164204576"> </p>
-<p>初始状态只有两栏菜单栏Home和Archives，在next主题配置文件显示也如下</p>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="comment">#about: /about/ || fa fa-user</span></span><br><span class="line">  <span class="comment">#tags: /tags/ || fa fa-tags</span></span><br><span class="line">  <span class="comment">#categories: /categories/ || fa fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || fa fa-calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || fa fa-sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || fa fa-heartbeat</span></span><br></pre></td></tr></table></figure>
-
-<p>现在重新进行配置，将其他的菜单栏启用，也可以看到对应的菜单栏出现了</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">/schedule/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || fa fa-sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || fa fa-heartbeat</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615164755815.png" alt="image-20210615164755815"> </p>
-<p>但是，如果点菜单栏，除了Home和Archives，其余的都会报错，这个时候还需要在hexo添加</p>
-<p><img src="/images/image-20210615164936153.png" alt="image-20210615164936153"> </p>
-<h3 id="创建对应主页文件"><a href="#创建对应主页文件" class="headerlink" title="创建对应主页文件"></a>创建对应主页文件</h3><p>假定当前都还是在博客所在文件夹，执行命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<p>成功后会提示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INFO  Validating config</span><br><span class="line">INFO  Created: ~/Blog/source/categories/index.md</span><br></pre></td></tr></table></figure>
-
-<p>根据路径打开index.md这个文件，打开默认内容是：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line"><span class="section">date: 2021-06-15 16:52:41</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p>添加属性让hexo知道这个文件是类似于索引主页，添加完毕后<code>Categories</code>栏就生效了</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2021-06-15 16:52:41</span><br><span class="line"><span class="section">type: &quot;categories&quot;</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615165838206.png" alt="image-20210615165838206"> </p>
-<h3 id="创建文章并添加到分类"><a href="#创建文章并添加到分类" class="headerlink" title="创建文章并添加到分类"></a>创建文章并添加到分类</h3><p>新建一个文件，并且添加Categories属性。首先新建一篇文章带有标题</p>
-<p><img src="/images/image-20210615170415993.png" alt="image-20210615170415993"> </p>
-<p>然后编辑文章的开头属性到特定分类<code>组件/hexo</code>，hexo的一篇文章只能有一个分类，如果在属性中添加了两个分类，实际上会把文章进行分类嵌套。最后的结果如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">使用next主题</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2021-06-15 17:01:37</span></span><br><span class="line"><span class="attr">categories:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">组件</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">hexo</span></span><br><span class="line"><span class="attr">tags:</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615170820140.png" alt="image-20210615170820140"> </p>
-<p>成功给文章添加分类，现在点击首页的<code>Categories</code>就可以看到所有文章，当然这些文章也必须添加了分类属性，才能被收录。</p>
-<h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p>同样的类似于<code>Categories</code>菜单栏，流程是创建新的页面，然后修改index.md属性。文章添加<code>tags</code>属性</p>
-<h3 id="创建tags主页文件"><a href="#创建tags主页文件" class="headerlink" title="创建tags主页文件"></a>创建tags主页文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615171415972.png" alt="image-20210615171415972"> </p>
-<p>打开创建的这个文件，并设置其为<code>tags</code>主页，如果其他文章没有tag，初始显示为空</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2021-06-15 17:13:48</span><br><span class="line"><span class="section">type: &quot;tags&quot;</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615171652493.png" alt="image-20210615171652493"> </p>
-<h3 id="创建文章并添加标签"><a href="#创建文章并添加标签" class="headerlink" title="创建文章并添加标签"></a>创建文章并添加标签</h3><p>继续使用之前的那个文件来做演示，在文章的开头属性中添加tag属性<code>折腾</code>和<code>hexo</code></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 使用next主题</span><br><span class="line">date: 2021-06-15 17:01:37</span><br><span class="line">categories:</span><br><span class="line"><span class="bullet">-</span> 组件</span><br><span class="line"><span class="bullet">-</span> hexo</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">-</span> 折腾</span><br><span class="line"><span class="bullet">-</span> hexo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/image-20210615172142159.png" alt="image-20210615172142159"> </p>
-<p>至此添加完毕</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>写文章最常用到的就是分类和标签属性了。hexo可以切换使用什么主题，在站点目录的配置文件去进行设定即可。主题渲染出来的站点，菜单栏的开启需要在主题目录下的配置文件去进行设定。hexo如何对文件进行显示，应该是通过markdown文章的开头注释去解析的，例如index.md充当的作用就是菜单栏主页、文章的开头也可以添加分类和属性等等。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1242,7 +1192,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
