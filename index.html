@@ -166,6 +166,157 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/26/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/26/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">工厂模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-26 21:49:06 / 修改时间：21:49:47" itemprop="dateCreated datePublished" datetime="2021-06-26T21:49:06+08:00">2021-06-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h1><h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p>简单工厂模式描述了一个类，拥有一个包含大量的条件语句的构建方法，可以根据方法的参数来选择对哪一种产品进行初始化并返回。</p>
+<h3 id="结构组成"><a href="#结构组成" class="headerlink" title="结构组成"></a>结构组成</h3><p>简单工厂模式结构组成通常包括：</p>
+<ol>
+<li>工厂类：工厂模式的核心类，定义了一个用于创建指定的具体实例对象的接口</li>
+<li>抽象产品类：具体产品类的继承的父类或者实现的接口</li>
+<li>具体产品类：工厂类创建的对象就是这个产品类的实例</li>
+</ol>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>举一个简单的例子，以鞋子广告的显示为例，就需要根据鞋子的不同显示不同的广告，那么这个地方对应：</p>
+<p><code>Shoes</code>为鞋子的基类，也就是上面提到的抽象产品类，接口函数设计为<code>Show()</code>，用于显示鞋子的广告；</p>
+<p><code>NikeShoes</code>、<code>AdidasShoes</code>、<code>LiNingShoes</code>为鞋子的具体类，也就是具体产品类，都是继承与<code>Shoes</code>抽象类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shoes</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">Shoes</span>() &#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeShoes</span> :</span> <span class="keyword">public</span> Shoes &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;From Nike: Just do it&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AdidasShoes</span> :</span> <span class="keyword">public</span> Shoes &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;From Adidas: Impossible is nothing&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LiNingShoes</span> :</span> <span class="keyword">public</span> Shoes &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;From LiNing: Everything is possible&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是定义一个工厂类，在其中对于不同鞋子类的创建方法进行了一个封装</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShoesFactory</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Shoes *<span class="title">CreateShoes</span><span class="params">(SHOES_TYPE type)</span> </span>&#123;</span><br><span class="line">		<span class="built_in"><span class="keyword">switch</span></span> (type) &#123;</span><br><span class="line">			<span class="keyword">case</span> NIKE:</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">NikeShoes</span>();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> LINING:</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">LiNingShoes</span>();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> ADIDAS:</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">AdidasShoes</span>();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在main函数中，首先构造一个工厂对象，然后通过工厂对象中封装的构建方法，创建指定具体的、指定类型的产品对象，创建了具体产品对象就可以调用相应的方法了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建工厂对象</span></span><br><span class="line">    ShoesFactory shoesFactory;</span><br><span class="line">    <span class="comment">// 从鞋子工厂对象创建指定鞋子对象：NIKE</span></span><br><span class="line">    Shoes *pNikeShoes = shoesFactory.<span class="built_in">CreateShoes</span>(NIKE);</span><br><span class="line">    <span class="keyword">if</span> (pNikeShoes != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        pNikeShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">        <span class="keyword">delete</span> pNikeShoes;</span><br><span class="line">        pNikeShoes = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Shoes *pLiNingShoes = shoesFactory.<span class="built_in">CreateShoes</span>(LINING);</span><br><span class="line">    <span class="keyword">if</span> (pLiNingShoes != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        pLiNingShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">        <span class="keyword">delete</span> pLiNingShoes;</span><br><span class="line">        pLiNingShoes = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Shoes *pAdidasShoes = shoesFactory.<span class="built_in">CreateShoes</span>(ADIDAS);</span><br><span class="line">    <span class="keyword">if</span> (pAdidasShoes != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        pAdidasShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">        <span class="keyword">delete</span> pAdidasShoes;</span><br><span class="line">        pAdidasShoes = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> oneshell @ DESKTOP-KI7OLTA <span class="keyword">in</span> ~/Code/<span class="built_in">test</span> [20:44:39]</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> ./a.out</span></span><br><span class="line">From Nike: Just do it</span><br><span class="line">From LiNing: Everything is possible</span><br><span class="line">From Adidas: Impossible is nothing</span><br></pre></td></tr></table></figure>
+
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>由工厂类封装了创建具体产品的函数。</p>
+<h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><h3 id="结构组成-1"><a href="#结构组成-1" class="headerlink" title="结构组成"></a>结构组成</h3><p>工厂方法模式的结构组成大致如下：</p>
+<ol>
+<li>抽象工厂类：工厂方法模式的核心类，用来提供具体产品的接口，由具体工厂类实现</li>
+<li>具体工厂类：继承于抽象工厂，用于创建对应产品对象</li>
+<li>抽象产品类：具体产品继承的基类</li>
+<li>具体产品类：具体工厂所创建的对象，也就是最后要创建的对象</li>
+</ol>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><p>同样以上面的鞋子举例，</p>
+<p><code>ShoesFactory</code>抽象工厂类，提供创建具体鞋子产品的纯虚函数。</p>
+<p><code>NikeProducer</code>、<code>AdidasProducer</code>、<code>LiNingProducer</code>代表具体工厂类，继承于抽象工厂类，实现具体鞋子产品对象的实例化（创建）</p>
+<p>抽象产品类和具体产品类还是沿用上面简单工厂模式里面的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShoesFactory</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">ShoesFactory</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeProducer</span> :</span> <span class="keyword">public</span> ShoesFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">NikeShoes</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AdidasProducer</span> :</span> <span class="keyword">public</span> ShoesFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">AdidasShoes</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LiNingProducer</span> :</span> <span class="keyword">public</span> ShoesFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">LiNingShoes</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main函数中，对于构造了每种类型的生产线，然后再由生产线生产出来对应的产品。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ShoesFactory *nikeProducer = <span class="keyword">new</span> <span class="built_in">NikeProducer</span>();</span><br><span class="line">    Shoes *nikeShoes = nikeProducer-&gt;<span class="built_in">CreateShoes</span>();</span><br><span class="line">    nikeShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">    <span class="keyword">delete</span> nikeShoes;</span><br><span class="line">    <span class="keyword">delete</span> nikeProducer;</span><br><span class="line"></span><br><span class="line">    ShoesFactory *liningProducer = <span class="keyword">new</span> <span class="built_in">LiNingProducer</span>();</span><br><span class="line">    Shoes *liningShoes = liningProducer-&gt;<span class="built_in">CreateShoes</span>();</span><br><span class="line">    liningShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">    <span class="keyword">delete</span> liningShoes;</span><br><span class="line">    <span class="keyword">delete</span> liningProducer;</span><br><span class="line"></span><br><span class="line">    ShoesFactory *adidasProducer = <span class="keyword">new</span> <span class="built_in">AdidasProducer</span>();</span><br><span class="line">    Shoes *adidasShoes = adidasProducer-&gt;<span class="built_in">CreateShoes</span>();</span><br><span class="line">    adidasShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">    <span class="keyword">delete</span> adidasShoes;</span><br><span class="line">    <span class="keyword">delete</span> adidasProducer;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码运行如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> oneshell @ DESKTOP-KI7OLTA <span class="keyword">in</span> ~/Code/<span class="built_in">test</span> [21:06:09]</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> ./a.out</span> </span><br><span class="line">From Nike: Just do it</span><br><span class="line">From LiNing: Everything is possible</span><br><span class="line">From Adidas: Impossible is nothing</span><br></pre></td></tr></table></figure>
+
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>工厂方法模式抽象出来了工厂类作为基类，提供创建具体产品的接口，具体如何实现交给子类去实现，例如<code>ShoesFactory</code>作为基类，给<code>NikeProducer</code>定义了接口，但是实现交给<code>NikeProducer</code>去实现。</li>
+<li>工厂方法模式把具体产品对象的创建放到了具体的工厂类中去实现，例如<code>liningProducer</code>具体工厂类中进行具体产品对象的实例化。</li>
+</ul>
+<p>工厂方法模式也存在一些缺陷：</p>
+<ul>
+<li>每增加一个产品，就需要增加一个对应的具体工厂类，相比于简单工厂模式而言，工厂方法模式需要更多的类定义（具体工厂类的定义）</li>
+<li>一条生产线只能生产一种产品</li>
+</ul>
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><h3 id="结构组成-2"><a href="#结构组成-2" class="headerlink" title="结构组成"></a>结构组成</h3><p>抽象工厂模式的结构组成和工厂方法模式一样：</p>
+<ol>
+<li>抽象工厂类：核心类，提供创建具体产品的接口，但是由具体工厂类来实现</li>
+<li>具体工厂类：继承于抽象工厂类，实现创建具体对应产品对象的方式</li>
+<li>抽象产品类：具体产品类继承的基类</li>
+<li>具体产品类：具体工厂所创建的对象</li>
+</ol>
+<p>抽象产品类和具体产品类，结合起来实现定义具体的产品</p>
+<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><p>还是采用之前的鞋子流派，但是这个时候，如果还想创建额外的衣服类的话，，，</p>
+<p><code>Clothes</code>和Shoes，分别为衣服类和鞋子类的抽象产品类。</p>
+<p><code>NikeClothes</code>和<code>NikeShoes</code>，分别是相同品牌的衣服和鞋子的具体产品类。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clothes</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">Clothes</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothes</span> :</span> <span class="keyword">public</span> Clothe &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;I am Nike Clothes&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>设计<code>Factory</code>为抽象工厂类，同时提供了创建鞋子<code>CreateShoes()</code>和衣服<code>CreateClothes()</code>方法，创建对应的对象。</p>
+<p><code>NikeProducer</code>为具体工厂类，实现了创建具体产品的方式。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Clothes *<span class="title">CreateClothes</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">Factory</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeProducer</span> :</span> <span class="keyword">public</span> Factory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Shoes *<span class="title">CreateShoes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">NikeShoes</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function">Clothes *<span class="title">CreateClothes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">NikeClothe</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main函数，首先创建耐克工厂类，然后通过耐克工厂对象再创建具体的耐克衣服和鞋子对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Factory *nikeProducer = <span class="keyword">new</span> <span class="built_in">NikeProducer</span>();</span><br><span class="line">	Shoes *nikeShoes = nikeProducer-&gt;<span class="built_in">CreateShoes</span>();</span><br><span class="line">	Clothes *nikeClothes = nikeProducer-&gt;<span class="built_in">CreateClothes</span>();</span><br><span class="line">	nikeShoes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">	nikeClothes-&gt;<span class="built_in">Show</span>();</span><br><span class="line">	<span class="keyword">delete</span> nikeShoes;</span><br><span class="line">	<span class="keyword">delete</span> nikeClothes;</span><br><span class="line">	<span class="keyword">delete</span> nikeProducer;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> oneshell @ DESKTOP-KI7OLTA <span class="keyword">in</span> ~/Code/<span class="built_in">test</span> [21:36:02]</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> ./a.out</span> </span><br><span class="line">From Nike: I am Nike Shoes</span><br><span class="line">From Nike: I am Nike Clothes</span><br></pre></td></tr></table></figure>
+
+<h3 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h3><p>提供了一个接口，可以创建某个产品组里面的多种产品对象。例如<code>nikeProducer</code>可以创建<code>nikeShoes</code>和<code>nikeClothes</code>对象。</p>
+<p>缺点也和工厂方法模式类似：每新增一个产品，都需要增加一个对应的产品的具体工厂类。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上的三种工厂模式：简单工厂模式、工厂方法模式、抽象工厂模式，如果刚接触，有点模糊，真滴建议撸一撸代码，继承关系一看，就非常简单明了。 </p>
+<p>三种工厂模式在新增产品的时候，都存在一定的缺陷：</p>
+<ul>
+<li>简单工厂模式，需要修改工厂类，违背了开闭法则</li>
+<li>工厂方法模式和抽象工厂模式，都需要增加一个对应的产品的具体工厂类</li>
+</ul>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/83535678">C++深入浅出工厂模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://refactoringguru.cn/design-patterns/factory-comparison">工厂模式比较</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/26/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1085,100 +1236,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/578%20%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="OneShell">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OneShell">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/21/578%20%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/" class="post-title-link" itemprop="url">578 零钱兑换</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-21 11:09:47 / 修改时间：11:10:28" itemprop="dateCreated datePublished" datetime="2021-06-21T11:09:47+08:00">2021-06-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="518-零钱兑换"><a href="#518-零钱兑换" class="headerlink" title="518 零钱兑换"></a>518 零钱兑换</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change-2/">题目</a></p>
-<p><strong>思路</strong></p>
-<p>分析题意，首先确认是一个完全背包，而且要求的是不同硬币方法的组合数，和排列数区分开，也就是：凑成总额为5的选择有{2, 2, 1} 和{1, 2, 2}实际上都是一样的，算一种方法，而排列数算为两种方法</p>
-<ol>
-<li><p>定义<code>dp[j]</code>：凑成总金额为j的货币组合数为<code>dp[j]</code></p>
-</li>
-<li><p>递推公式：<code>dp[j] = dp[j] + dp[j - nums[i]]</code></p>
-</li>
-<li><p>初始化：<code>dp[0] = 1</code>，理解为凑到金额0只有全部硬币都不取一种方法</p>
-</li>
-<li><p>确认遍历顺序</p>
-<p>如果是对于01背包，没有什么选择，先遍历物品，再遍历背包容量，且背包容量是从大到小</p>
-<p>但是对于完全背包，可以确认的是背包容量是从小遍历到大，这样可以保证物品的重复放入属性，需要根据不同的需要判定物品和背包容量的遍历先后顺序</p>
-<p><strong>如果是对于求组合数，也就是这一道题，需要先遍历物品，再遍历背包容量；</strong></p>
-<p><strong>如果是求排列数，那么需要先遍历背包容量，再遍历物品；</strong></p>
-</li>
-</ol>
-<p><strong>注意</strong></p>
-<ul>
-<li>求组合，先遍历物品，再遍历背包容量；求排列，先变量背包容量，再遍历物品</li>
-<li>基本上明白<code>dp</code>该怎么进行定义了，题目怎么需要就怎么定义，无非是方法数（排列、组合）、最值，先就这两种吧</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">change</span><span class="params">(<span class="keyword">int</span> amount, vector&lt;<span class="keyword">int</span>&gt;&amp; coins)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span><span class="params">(amount + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> coin : coins) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = coin; j &lt;= amount; ++j) </span><br><span class="line">                dp[j] += dp[j - coin];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[amount];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1248,7 +1305,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1261,7 +1318,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
