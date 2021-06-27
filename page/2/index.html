@@ -166,6 +166,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/377%20%E7%BB%84%E5%90%88%E6%80%BB%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/377%20%E7%BB%84%E5%90%88%E6%80%BB%E6%95%B0/" class="post-title-link" itemprop="url">377 组合总数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 11:38:37 / 修改时间：11:38:46" itemprop="dateCreated datePublished" datetime="2021-06-21T11:38:37+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="377-组合总数IV"><a href="#377-组合总数IV" class="headerlink" title="377 组合总数IV"></a>377 组合总数IV</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/">题目链接</a></p>
+<p><strong>思路</strong></p>
+<p>明确问题是完全背包+排列问题</p>
+<ol>
+<li>定义<code>dp[i]</code>：凑成目标和为i的排列总数</li>
+<li>确定递推公式：<code>dp[i] += dp[i - nums[j]]</code></li>
+<li>dp数组初始化：<code>dp[0] = 1</code>，其余初始化为0</li>
+<li>确定遍历顺序：完全背包+排列问题，因此遍历顺序：<ul>
+<li>外层for循环遍历背包容量，背包容量从小到大</li>
+<li>内层for循环遍历物品</li>
+</ul>
+</li>
+<li>手动进行一次演算，确保给出的例子可以手动跑通</li>
+</ol>
+<p><strong>注意</strong></p>
+<ul>
+<li>目前有点理解排列为什么要先遍历背包容量了，其实就是对于某个指定的背包容量，一定要把所有物品都尝试放一次，这就是排列的意义</li>
+<li>对于组合，为什么要先遍历物品，就是对于某个指定物品，将所有的背包容量全部放一次，这样物品的先后顺序就没有意义，就是组合的意义</li>
+<li><code>dp[i] &lt; INT_MAX - dp[i - nums[j]]</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">combinationSum4</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span><span class="params">(target + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= target; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nums.<span class="built_in">size</span>(); ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i - nums[j] &gt;= <span class="number">0</span> &amp;&amp; dp[i] &lt; INT_MAX - dp[i - nums[j]])</span><br><span class="line">                    dp[i] += dp[i - nums[j]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[target];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/578%20%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -963,106 +1054,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="OneShell">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OneShell">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/20/%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">两种高效的时间处理模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-20 17:33:15" itemprop="dateCreated datePublished" datetime="2021-06-20T17:33:15+08:00">2021-06-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-21 21:36:02" itemprop="dateModified" datetime="2021-06-21T21:36:02+08:00">2021-06-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="两种高效的事件处理模式"><a href="#两种高效的事件处理模式" class="headerlink" title="两种高效的事件处理模式"></a>两种高效的事件处理模式</h1><p>服务器程序上通常需要处理三类事件：IO事件、信号、定时事件。那么对于这三类如何进行处理，有两种高效的事件处理模式：Reactor和Proactor</p>
-<p>通常使用同步IO模型来实现Reactor模式，</p>
-<h2 id="0x01-Reactor模式"><a href="#0x01-Reactor模式" class="headerlink" title="0x01 Reactor模式"></a>0x01 Reactor模式</h2><h3 id="总述"><a href="#总述" class="headerlink" title="总述"></a>总述</h3><p>Reactor使用主线程（IO处理单元）只负责监听文件描述上是否有事件发生，如果有就立刻通知工作线程（逻辑单元），除此之外，主线程不做其他的事情。读写数据、接受连接，以及处理用户请求都是在工作线程中完成。</p>
-<p><img src="/images/36r70qpn168040389n60n9o3pr323151.jpg" alt="img"></p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>使用同步IO模型（例如epoll_wait），实现Reactor模式的流程就是：</p>
-<ol>
-<li>主线程往epoll_wait内核事件表中注册socket上的读就绪事件</li>
-<li>主线程调用epoll_wait等待socket上有数据可读</li>
-<li>当socket可读的时候，epoll_wait通知主线程，主线程将可读事件放入到请求队列中</li>
-<li>睡眠在请求队列上的某个工作线程被唤醒，从socket中读取数据，处理用户请求，然后往epoll内核事件表中注册socket上的写就绪事件</li>
-<li>主线程调用epoll_wait等待socket可写</li>
-<li>当socket可写的时候，epoll_wait通知主线程，主线程把socket可写事件放入请求队列</li>
-<li>睡眠在请求队列的某个工作线程被唤醒，往socket中写入之前服务器处理好的用户请求结果</li>
-</ol>
-<h2 id="0x02-Proactor模式"><a href="#0x02-Proactor模式" class="headerlink" title="0x02 Proactor模式"></a>0x02 Proactor模式</h2><h3 id="总述-1"><a href="#总述-1" class="headerlink" title="总述"></a>总述</h3><p>Proactor模式将所有的IO操作交给主线程和内核进行处理，工作线程仅仅负责业务逻辑，从某种程度上来说，Proactor模式更加适合广义的服务器编程框架</p>
-<p><img src="/images/n54130637587432393s13936r62sr182.jpg" alt="Proactor"></p>
-<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>使用同步IO（epoll_wait）模拟Proactor模式的工作流程如下：</p>
-<ol>
-<li>主线程往epoll_wait内核事件表中注册socket上的读就绪事件</li>
-<li>主线程调用epoll_wait等待socket上有数据可读</li>
-<li>当socket上有数据可读时，epoll_wait通知主线程，主线程从socket中循环读取数据，直到数据被读取完毕，然后将读取到的数据封装称一个请求对象插入到请求队列中</li>
-<li>睡眠在请求队列上的某个工作线程被唤醒，它获得请求对象并处理客户请求，然后往epoll_wait内核事件表中注册socket的写就绪事件</li>
-<li>主线程调用epoll_wait等待socket可写</li>
-<li>当socket可写的时候，epoll_wait通知主线程，主线程往socket中写入服务器处理客户请求的结果</li>
-</ol>
-<p><img src="/images/4pssqrs8n60p4s359ppo105955171o80.jpg" alt="img"></p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这个是对事件的处理方式。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1132,20 +1123,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
