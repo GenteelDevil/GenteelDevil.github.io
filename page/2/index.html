@@ -166,6 +166,127 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="OneShell">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OneShell">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">进程间通信方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-21 20:22:02 / 修改时间：20:22:41" itemprop="dateCreated datePublished" datetime="2021-06-21T20:22:02+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="进程间的通信方式"><a href="#进程间的通信方式" class="headerlink" title="进程间的通信方式"></a>进程间的通信方式</h1><ol>
+<li><p>管道/匿名管道（Pipes）：用于具有亲缘关系的父子进程间或者兄弟进程间的通信，但是通信是单向的，如果要实现全双工，需要两边都开两个管道文件描述符</p>
+<p>通过匿名管道实现进程间通信的步骤如下：</p>
+<ol>
+<li>父进程创建管道，得到两个文件描述符指向管道的两端</li>
+<li>父进程fork出来子进程，子进程也有两个文件描述符指向同一管道，因为父子进程共享文件描述符</li>
+<li>父进程关闭fd[0]，子进程关闭fd[1]，即父进程关闭管道读端，子进程关闭管道写端，这样父进程可以往管道中写，子进程可以从管道中读。</li>
+</ol>
+<p>一个简单的使用管道的例子，这是使用的半双工通信，如果要进行全双工的通信，需要使用两对文件描述符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fd[<span class="number">2</span>];</span><br><span class="line">    <span class="comment">// 创建管道对</span></span><br><span class="line">    <span class="keyword">int</span> ret = pipe(fd);</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;pipe error\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">pid_t</span> id = fork();</span><br><span class="line">    <span class="comment">// 如果在子进程中</span></span><br><span class="line">    <span class="keyword">if</span> (id == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> pid = getpid();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        close(fd[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">char</span> *child = <span class="string">&quot;I am a child&quot;</span>;</span><br><span class="line">        <span class="comment">// 子进程发送五次消息</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">            write(fd[<span class="number">1</span>], child, <span class="built_in">strlen</span>(child) + <span class="number">1</span>);</span><br><span class="line">            sleep(<span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (id &gt; <span class="number">0</span>) &#123;  <span class="comment">// 在父进程中</span></span><br><span class="line">        close(fd[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">char</span> msgbuf[<span class="number">100</span>] = &#123;<span class="string">&#x27;\0&#x27;</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(msgbuf, <span class="string">&#x27;\0&#x27;</span>, <span class="keyword">sizeof</span>(msgbuf));</span><br><span class="line">            <span class="comment">// 这个地方的读是阻塞的</span></span><br><span class="line">            <span class="keyword">ssize_t</span> s = read(fd[<span class="number">0</span>], msgbuf, <span class="keyword">sizeof</span>(msgbuf));</span><br><span class="line">            <span class="keyword">if</span> (s &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;father process %d: receive data %s\n&quot;</span>, id, msgbuf);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        perror(<span class="string">&quot;fork erronr\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>有名管道（Names Pipes）：</p>
+<p>匿名管道实际上只能用于父子进程间的通信，为了克服这个缺点，提出了有名管道。有名管道实际上是提供了一个路径名与之关联，因此，创建有名管道的进程哪怕是不存在亲缘关系的进程，只要可以访问该路径，就可以通过有名管道进行通信。</p>
+<p>我用多进程写，总是写不好，这个地方先不放代码了，可以参加一下两个博客，都是分别读和写实现的</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/fengyeshangqing/blog/335785">Linux C编程 有名管道FIFO</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Leafage_M/article/details/78893822">有名管道实现进程间通信</a></li>
+</ul>
+</li>
+<li><p>信号（Signal）：信号是由用户、系统或者进程发送给目标进程的信息，以通知目标进程某个状态的改变或者系统异常。</p>
+<p>比如前台进程使用Ctrl + C结束进程、系统发生了异常（浮点异常或者非法内存访问）、系统状态变化（alarm时钟）、kill命令或调用。在服务器程序中，有一种统一事件源的做法。通常是信号处理函数接受信号，然后把信号值传递给主循环，主循环根据信号值来调用对应的逻辑代码。例如，信号处理函数捕获信号后，把信号值传递通过管道传递给主循环，主循环通过IO复用调用来监听管道上的可读事件，就可以实现信号事件和其他IO事件一样的处理方式了。</p>
+</li>
+<li><p>消息队列（Message Queuing）：用于在进程间传递二进制数据，每个数据块都有一个特定的数据类型，接收方可以根据类型有选择地接受数据</p>
+<p>消息队列涉及到的一些系统调用，粗浅说一下：</p>
+<ul>
+<li>使用msgget创建或者获取一个消息队列，同样有一个全局唯一的键值，创建的过程会对应创建内核数据结构</li>
+<li>msgsnd将一个消息添加到消息队列中，添加的消息包含消息类型和消息数据两个部分</li>
+<li>msgrcv从消息队列中获取消息</li>
+</ul>
+<p>初次之外，还有一个msgctl控制相关属性</p>
+</li>
+<li><p>信号量（Semaphores）：用于在多个进程对于临界资源的访问进行控制。</p>
+<p>使用信号量，存在如下的一些系统调用：</p>
+<ul>
+<li>semget：创建或者获取一个信号量集，同样需要一个键值，用于全局唯一标记一个信号量集。创建信号量集会产生相应的内核数据结构。通常对于这种内核数据结构，都是包含：权限相关信息、时间相关信息</li>
+<li>semop：对信号集中的变量执行PV操作，实际上就是对内核数据进行操作，可以对信号量集中的具体信号进行操作（通过传入指针的方式）。</li>
+<li>semctl：对信号量进行直接控制，例如对于某个信号量集中的特定信号量进行数据提取、移除、获取内核数据结构相关信息等等</li>
+</ul>
+<p>如下是一个简单的父子进程，使用信号量，但是没有对任何资源进行控制，只是使用了信号量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/sem.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">semun</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">semid_ds</span>* <span class="title">buf</span>;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span>* <span class="built_in">array</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">seminfo</span>* __<span class="title">buf</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// op为-1的时候执行P操作，op为1的时候执行V操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pv</span><span class="params">(<span class="keyword">int</span> sem_id, <span class="keyword">int</span> op)</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sembuf</span> <span class="title">sem_b</span>;</span></span><br><span class="line">    sem_b.sem_num = <span class="number">0</span>;</span><br><span class="line">    sem_b.sem_op = op;</span><br><span class="line">    sem_b.sem_flg = SEM_UNDO;</span><br><span class="line">    semop(sem_id, &amp;sem_b, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// IPC_PRIVETE是一个特殊的键值，无论信号量集是否存在，都新建一个</span></span><br><span class="line">    <span class="keyword">int</span> sem_id = semget(IPC_PRIVATE, <span class="number">1</span>, <span class="number">0666</span>);</span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">semun</span> <span class="title">sem_un</span>;</span></span><br><span class="line">    <span class="comment">// 设置信号量初始化为1，实际上就是调用semctl把用户态的数据复制到内核态数据中</span></span><br><span class="line">    sem_un.val = <span class="number">1</span>;</span><br><span class="line">    semctl(sem_id, <span class="number">0</span>, SETVAL, sem_un);</span><br><span class="line">    <span class="keyword">pid_t</span> id = fork();</span><br><span class="line">    <span class="comment">// fork出错</span></span><br><span class="line">    <span class="keyword">if</span> (id &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (id == <span class="number">0</span>) &#123;  <span class="comment">// 在子进程中</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;in child process\n&quot;</span>);</span><br><span class="line">        pv(sem_id, <span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;child process get the sem and would release it after 3 seconds\n&quot;</span>);</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">        pv(sem_id, <span class="number">1</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;in father process\n&quot;</span>);</span><br><span class="line">        pv(sem_id, <span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;father process get the sem and would release it after 3 seconds\n&quot;</span>);</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">        pv(sem_id, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    waitpid(id, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">    semctl(sem_id, <span class="number">0</span>, IPC_RMID, sem_un);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>共享内存（Shared Memories）：可以让多个进程同时访问同一块内存空间，由于不涉及到数据的传输，因此是一个高效的IPC机制。但是共享内存需要结合一些同步措施来对共享内存进行访问，否则会出现竟态条件。</p>
+<p>共享内存设计到的一些系统调用，同样粗浅说一下：</p>
+<ul>
+<li><p>使用shmget获取一段共享内存，有一个键值参数可以保证共享内存全局唯一，通过这个值不同进程把共享内存附加到自己的地址空间</p>
+</li>
+<li><p>使用shmat将共享内存附加到进程的地址空间中</p>
+</li>
+<li><p>使用完毕后，调用shmdt将共享内存从地址空间分离</p>
+</li>
+</ul>
+<p>其中，还可以使用shmctl系统调用来对共享内存的属性进行配置</p>
+</li>
+<li><p>套接字（Socket）：就是使用socket编程来进行通信，可以跨主机，也比较方便使用一些网络工具来查看和进行调试，当然TCP是字节流，可能还需要结合一些序列化工具。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -971,90 +1092,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/21/32~34/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="OneShell">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="OneShell">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/21/32~34/" class="post-title-link" itemprop="url">32~34</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-21 09:28:19 / 修改时间：10:35:07" itemprop="dateCreated datePublished" datetime="2021-06-21T09:28:19+08:00">2021-06-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87Offer/" itemprop="url" rel="index"><span itemprop="name">剑指Offer</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="32-34-二叉树的层次遍历"><a href="#32-34-二叉树的层次遍历" class="headerlink" title="32~34 二叉树的层次遍历"></a>32~34 二叉树的层次遍历</h2><p>三道都是二叉树层次遍历相关</p>
-<h2 id="32-I-从上到下打印二叉树"><a href="#32-I-从上到下打印二叉树" class="headerlink" title="32 I 从上到下打印二叉树"></a>32 I 从上到下打印二叉树</h2><p><strong>思路</strong></p>
-<p>层次遍历</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">levelOrder</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);  </span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> curLevelSize = que.<span class="built_in">size</span>();</span><br><span class="line">            <span class="comment">// 这个地方是先用再自减</span></span><br><span class="line">            <span class="keyword">while</span>(curLevelSize--) &#123;</span><br><span class="line">                TreeNode* tmp = que.<span class="built_in">front</span>();</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                res.<span class="built_in">push_back</span>(tmp-&gt;val);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left)</span><br><span class="line">                    que.<span class="built_in">push</span>(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right)</span><br><span class="line">                    que.<span class="built_in">push</span>(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="33-II-从上到下打印二叉树"><a href="#33-II-从上到下打印二叉树" class="headerlink" title="33 II 从上到下打印二叉树"></a>33 II 从上到下打印二叉树</h2><p><strong>思路</strong></p>
-<p>层次遍历，需要把每一层的单独存入一个vector中</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">levelOrder</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> n = que.<span class="built_in">size</span>();</span><br><span class="line">            vector&lt;<span class="keyword">int</span>&gt; tmpVector;</span><br><span class="line">            <span class="keyword">while</span> (n--) &#123;</span><br><span class="line">                TreeNode* tmp = que.<span class="built_in">front</span>();</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                tmpVector.<span class="built_in">push_back</span>(tmp-&gt;val);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;left) que.<span class="built_in">push</span>(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmp-&gt;right) que.<span class="built_in">push</span>(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            res.<span class="built_in">push_back</span>(tmpVector);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="34-III-从上到下打印二叉树"><a href="#34-III-从上到下打印二叉树" class="headerlink" title="34 III 从上到下打印二叉树"></a>34 III 从上到下打印二叉树</h2><p><strong>思路</strong></p>
-<p>对于每层，顺序、逆序进行遍历</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">levelOrder</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        queue&lt;TreeNode*&gt; que;</span><br><span class="line">        que.<span class="built_in">push</span>(root);</span><br><span class="line">        <span class="keyword">bool</span> inc = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (!que.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">int</span> n = que.<span class="built_in">size</span>();</span><br><span class="line">            <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">tmpRes</span><span class="params">(n)</span></span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">                TreeNode* tmpNode = que.<span class="built_in">front</span>();</span><br><span class="line">                <span class="keyword">if</span> (inc)</span><br><span class="line">                    tmpRes[i] = tmpNode-&gt;val;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                    tmpRes[n - i - <span class="number">1</span>] = tmpNode-&gt;val;</span><br><span class="line">                que.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span> (tmpNode-&gt;left) que.<span class="built_in">push</span>(tmpNode-&gt;left);</span><br><span class="line">                <span class="keyword">if</span> (tmpNode-&gt;right) que.<span class="built_in">push</span>(tmpNode-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            inc = !inc;</span><br><span class="line">            res.<span class="built_in">push_back</span>(tmpRes);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1124,14 +1161,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
